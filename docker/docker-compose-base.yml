@@ -2,7 +2,7 @@ services:
   es01:
     profiles:
       - elasticsearch
-    image: elasticsearch:${STACK_VERSION}
+    image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/elasticsearch:${STACK_VERSION}
     volumes:
       - esdata01:/usr/share/elasticsearch/data
     # Official ES image ACL on /tmp denies writes for user elasticsearch (r-x only).
@@ -20,6 +20,10 @@ services:
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://127.0.0.1:8080,http://localhost:8080
+      - http.cors.allow-headers=X-Requested-With,Content-Type,Content-Length,Authorization
+      - http.cors.allow-methods=OPTIONS,HEAD,GET,POST,PUT,DELETE
       - cluster.routing.allocation.disk.watermark.low=5gb
       - cluster.routing.allocation.disk.watermark.high=3gb
       - cluster.routing.allocation.disk.watermark.flood_stage=2gb
